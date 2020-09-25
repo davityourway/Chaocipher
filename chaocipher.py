@@ -72,7 +72,7 @@ def encode_char(string: str, rotor: RotorState, is_crypt: bool = False) -> None:
     """
     Permutes the rotor in the right (encryption) direction. For standard encryption it uses the plaintext string to do so.
     In the search function it can use the encrypted text, which enables it to place the rotor in the correct position to be
-    filled in.
+    filled in. This also allows it to permute across "?" as per the first exhibit.
     :param string: string being used for motion
     :param rotor: Rotor State to get there
     :param is_crypt: flag for whether or not the text string used for the traversal is plain or crypt text
@@ -141,7 +141,8 @@ def decode_string(string: str, rotor: RotorState, is_crypt: bool = True) -> str:
 
 def traverse_to(string: str, target_index: int, rotor: RotorState, is_crypt: bool = False) -> None:
     """
-
+    Brings the rotor to a target position in the enciphering process. Used primarily when executing the dfs and filling
+    in values
     :param string:
     :param target_index:
     :param rotor:
@@ -154,25 +155,6 @@ def traverse_to(string: str, target_index: int, rotor: RotorState, is_crypt: boo
             decode_char(string, rotor, is_crypt)
         else:
             encode_char(string, rotor, is_crypt)
-
-
-
-def find_repetitions(string: str) -> List[Tuple]:
-    repetitions = []
-    i = 0
-    while i < len(string):
-        if i + 1 < len(string) and string[i] == string[i + 1]:
-            j = i
-            while j < len(string) and string[i] == string[j]:
-                j += 1
-            repetitions.append((i, string[i], j - i))
-            if j + 1 < len(string):
-                i = j + 1
-            else:
-                return repetitions
-        else:
-            i += 1
-    return repetitions
 
 
 def crack(plaintext: str, cryptext: str, start_index: int) -> Optional[RotorState]:
@@ -328,10 +310,6 @@ def main():
     # cipher_2 = cipher_2.lower()
     # test_2 = crack(plain_2[:52], cipher_2[:52], find_starting_position(plain_2[:52], cipher_2[:52], 6))
     # print(test_2)
-
-
-
-
 
 if __name__ == '__main__':
     main()
