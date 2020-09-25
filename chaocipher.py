@@ -21,7 +21,7 @@ class RotorState:
         self.plain_set = plain_set if plain_set else set()
         self.text_index = text_index
 
-    def initialize(self, plaintext, cryptext, start_index):
+    def initialize_for_search(self, plaintext, cryptext, start_index):
         """
         Initializes the Rotor State at 1 step after some start position
         :param plaintext: plaintext string
@@ -158,8 +158,16 @@ def traverse_to(string: str, target_index: int, rotor: RotorState, is_crypt: boo
 
 
 def crack(plaintext: str, cryptext: str, start_index: int) -> Optional[RotorState]:
+    """
+    Function that runs the depth first search to crack the rotor from a plaintext and ciphertext from a given position
+    Initializes the rotor to 1 step after the encryption of the start index
+    :param plaintext:
+    :param cryptext:
+    :param start_index:
+    :return:
+    """
     rotor = RotorState(start_index)
-    rotor.initialize(plaintext, cryptext, start_index)
+    rotor.initialize_for_search(plaintext, cryptext, start_index)
     return dfs(plaintext, cryptext, rotor, SearchRange(start_index, start_index+1), 0)
 
 
