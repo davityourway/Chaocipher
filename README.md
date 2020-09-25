@@ -6,7 +6,8 @@ Created by Joshua Davitz and Jacob Bumgardner
 
 The Chaocipher is a century old cryptographic system whose mechanism was revealed to the public about ten years ago. For
  more details about its operation, see [Carl Scheffler's excellent explanation](http://www.inference.org.uk/cs482/projects/chaocipher/index.html)
-
+ 
+ 
 Our implementation of the cipher takes in a text string, for either encryption or decryption, and a Rotor State. Every 
 encryption of a decryption of a character in the Chaocipher permutes the plain and cipher rotors, so the relative ordering 
 of the rotors in the Chaocipher is very important. We represent the Rotors of the Chaocipher as a RotorState object 
@@ -31,8 +32,25 @@ of the string, and decoding will return it to the 0th position. As of now decode
 to end of their respective strings, and incomplete strings will cause an out of range error. Ignore the `is_crypt` variable 
 for simple encoding and decoding. 
 
-As of right now these operations only work with strings that contain continuous lower case variables. We will be adding handling shortly.
+As of right now these operations only work with strings that contain continuous lower case variables. We will be adding 
+handling shortly.
 
 ## The Cracker
 
-We use 
+Here is the fun part. 
+
+It's quite simple. All you need to do is input a plaintext string, a cipher string, and a starting position into
+the `crack` function. This will return either A) a viable rotor configuration or B) `None` if there is no discoverable
+rotor state. 
+
+`test_rotor = crack(plaintext, ciphertext, 42)`
+
+
+We have included a function, `find_starting_position` which selects an optimal position in the text to begin the dfs.
+Simply input the strings, and a "window size", and it will return the area with the fewest characters in that given
+window size in both the plain and encrypted text. This will maximize the amount of information present at the 
+beginning of the search and lead to MUCH faster results. You can simply call it inside the `crack` call for ease.
+
+`test_rotor = crack(plaintext, ciphertext, find_starting_position(plaintext, ciphertext, 6))`
+
+
