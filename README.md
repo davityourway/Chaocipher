@@ -1,8 +1,8 @@
-#Chaocipher
+# Chaocipher
 An implementation of John F. Byrne's cryptographic cipher in Python, with a Depth First Search to crack it (pretty quickly).
 Created by Joshua Davitz and Jacob Bumgardner
 
-##The Chaocipher
+## The Chaocipher
 
 The Chaocipher is a century old cryptographic system whose mechanism was revealed to the public about ten years ago. For
  more details about its operation, see Carl Scheffler's excellent explanation here: 
