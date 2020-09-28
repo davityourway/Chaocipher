@@ -43,14 +43,19 @@ It's quite simple. All you need to do is input a plaintext string, a cipher stri
 the `crack` function. This will return either A) a viable rotor configuration or B) `None` if there is no discoverable
 rotor state. 
 
-`test_rotor = crack(plaintext, ciphertext, 42)`
+`test_rotor = chaocipher.crack(plaintext, ciphertext, 42)`
 
 
 We have included a function, `find_starting_position` which selects an optimal position in the text to begin the dfs.
-Simply input the strings, and a "window size", and it will return the area with the fewest characters in that given
+Simply input the two strings, and a "window size", and it will return the area with the fewest characters in that given
 window size in both the plain and encrypted text. This will maximize the amount of information present at the 
 beginning of the search and lead to MUCH faster results. You can simply call it inside the `crack` call for ease.
 
-`test_rotor = crack(plaintext, ciphertext, find_starting_position(plaintext, ciphertext, 6))`
+`test_rotor = chaocipher.crack(plaintext, ciphertext, find_starting_position(plaintext, ciphertext, 6))`
+
+As of right now the cracker will only function on strings where both the plain and encrypted text are present. If you want
+to use it to decrypt some unknown characters(like in Exhibit 1), simply traverse the rotor to the index just before the unknown
+characters begin. Then, use encode or decode string on the string that you possess, this time making sure that you set
+the flag indicating what type of string you are using.
 
 
