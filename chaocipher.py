@@ -172,6 +172,18 @@ def crack(plaintext: str, cryptext: str, start_index: int) -> Optional[RotorStat
 
 
 def dfs(plaintext: str, cryptext: str, rotor_state: RotorState, search_range: SearchRange, stack_depth: int) -> Optional[RotorState]:
+    """
+    The body of the dfs. First it fills in all newly available positions with the newly selected characters, then it
+    checks for some completeness conditions. If they are not met the function proceeds to choose a direction,
+    find available configurations for the next letters that need to be added and then recurses.
+    stage of the dfs
+    :param plaintext:
+    :param cryptext:
+    :param rotor_state:
+    :param search_range:
+    :param stack_depth: Used primarily for debugging
+    :return:
+    """
     while check_function(plaintext, cryptext, rotor_state, search_range):
        # print(f"The search range is {search_range.end - search_range.start} wide and the stack is  {stack_depth} tall")
         if not fill_in(plaintext, cryptext, rotor_state, search_range):
@@ -198,6 +210,15 @@ def dfs(plaintext: str, cryptext: str, rotor_state: RotorState, search_range: Se
 
 
 def decide_direction(plaintext: str, cryptext: str, rotor: RotorState, search_range: SearchRange) -> int:
+    """
+    A crude heuristic to decide the direction to generate a new permutation in the depth first search based on how close
+    an available pair is in the plaintext, a mediocre proxy for information density. Could be further optimized.
+    :param plaintext:
+    :param cryptext:
+    :param rotor:
+    :param search_range:
+    :return:
+    """
     forward = 1
     backwards = -1
     if search_range.start == 0:
@@ -218,11 +239,28 @@ def decide_direction(plaintext: str, cryptext: str, rotor: RotorState, search_ra
 
 
 def find_open_positions(rotor: RotorState, backwards: bool = False) -> List[Tuple[int, int]]:
+    """
+    Finds open positions for a plain/cipher character pair. Because the text index has a slightly different meaning
+    based on the direction we pass in a flag.
+    :param rotor:
+    :param backwards:
+    :return:
+    """
     rotation_offset = -1 if backwards else 0
     return [(i, i+rotation_offset) for i in range(26) if rotor.plain_rotor[i+rotation_offset] == "#" and rotor.cipher_rotor[i] == "#"]
 
 
 def check_function(plaintext: str, cryptext: str, rotor_state: RotorState, search_range: SearchRange) -> bool:
+    """
+    Checks if there are characters in the search range that can still be filled in using the fill_in function. The while
+    loop will run until this returns False, which signifies that dfs should proceed with the recursion or return a
+    complete rotor
+    :param plaintext:
+    :param cryptext:
+    :param rotor_state:
+    :param search_range:
+    :return:
+    """
     if search_range.end != len(plaintext):
         if plaintext[search_range.end] in rotor_state.plain_set:
             return True
