@@ -1,5 +1,5 @@
 # Chaocipher
-An implementation of John F. Byrne's cryptographic cipher in Python, with a Depth First Search to crack it (pretty quickly).
+An implementation of John F. Byrne's cryptographic cipher in Python, with a backtracking algorithm to crack it (pretty quickly).
 Created by Joshua Davitz and Jacob Bumgardner
 
 ## The Chaocipher
